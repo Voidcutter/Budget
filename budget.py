@@ -12,6 +12,13 @@ class Category:
         for record in self.ledger:
             balance += record['amount']
         return balance
+    
+    def get_withdraw(self):
+        withdraw = 0
+        for record in self.ledger:
+            if record['amount'] < 0:
+                withdraw += record['amount']
+        return abs(withdraw)
 
     def check_funds(self, amount):
         return self.get_balance() >= amount   
@@ -41,4 +48,43 @@ class Category:
         result += f'Total: {self.get_balance():.2f}'
         return result
 
+def create_spend_chart(categories):
+    # get the total amount spent in all categories
+    total_spent = sum([c.get_withdraw() for c in categories])
+    # calculate the percentage spent in each category
+    percentages = [round((c.get_withdraw() / total_spent) * 100) for c in categories]
+    # round down the percentage to the nearest 10
+    rounded_percentages = [p - (p % 10) for p in percentages]
+
+    # create the chart header
+    chart = "Percentage spent by category\n"
+    # add the horizontal lines and categories
+    for i in range(100, -10, -10):
+        line = str(i).rjust(3) + "| "
+        for p in rounded_percentages:
+            if p >= i:
+                line += "o  "
+            else:
+                line += "   "
+        chart += line + "\n"
+
+    # add the horizontal line below the bars
+    chart += "    " + "-" * ((len(categories) * 3) + 1) + "\n"
     
+    # find the longest category name
+    nmax = 0
+    for i in categories:
+        if nmax < len(i.name):
+            nmax = len(i.name)
+    
+    for letter_num in range(nmax):
+        chart += "   "
+        for c in categories:
+            try:
+                chart += "  " + c.name[letter_num]
+            except:
+                chart += "   "
+        chart += "\n"
+
+    return chart
+
