@@ -41,13 +41,4 @@ class Category:
         result += f'Total: {self.get_balance():.2f}'
         return result
 
-food = Category("Food")
-food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
-
-print(food)
-        
-
-
     
