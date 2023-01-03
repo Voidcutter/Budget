@@ -16,7 +16,7 @@ class Category:
     def check_funds(self, amount):
         return self.get_balance() >= amount   
 
-    def withdraw(self, amount, description):
+    def withdraw(self, amount, description=''):
         if self.check_funds(amount) == True:
             self.ledger.append({'amount': -amount, 'description': description})
             return True
