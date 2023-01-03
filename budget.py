@@ -28,6 +28,26 @@ class Category:
             category.deposit(amount, f'Transfer from {self.name}')
             return True
         return False
+    
+    # on printing an object
+    def __str__(self): 
+        # create a category title surrounded by 30 * symbols. ^ means the category name is centered:
+        result = f'{self.name:*^30}\n'  
+
+        for record in self.ledger:
+            # check the two decimals thing in the amount:
+            amount = f"{record['amount']:.2f}" 
+            result += f'{record["description"][:23]: <23}{amount: >7}' + '\n'
+        result += f'Total: {self.get_balance():.2f}'
+        return result
+
+food = Category("Food")
+food.deposit(1000, "initial deposit")
+food.withdraw(10.15, "groceries")
+food.withdraw(15.89, "restaurant and more food for dessert")
+
+print(food)
+        
 
 
     
